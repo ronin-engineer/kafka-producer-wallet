@@ -1,0 +1,21 @@
+application-name: ronin-wallet
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    security:
+      protocol: plaintext
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 30
+      compression-type: lz4
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        spring.json.add.type.headers: false
+
+
+kafka:
+  transaction: ronin-wallet-transactions-dev # <tenant_id>-<service_owner>-<topic_name>-<environment>
