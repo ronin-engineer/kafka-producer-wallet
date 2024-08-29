@@ -1,5 +1,6 @@
 package dev.ronin_engineer.kafka.producer.wallet.api.rest;
 
+import dev.ronin_engineer.kafka.producer.wallet.domain.dto.FraudCheckResult;
 import dev.ronin_engineer.kafka.producer.wallet.domain.dto.TransactionRequest;
 import dev.ronin_engineer.kafka.producer.wallet.domain.event.TransactionEvent;
 import dev.ronin_engineer.kafka.producer.wallet.domain.service.TransactionService;
@@ -21,6 +22,11 @@ public class PaymentController {
     @PostMapping
     public TransactionEvent createTransaction(@RequestBody TransactionRequest request) {
         return transactionService.execute(request);
+    }
+
+    @PostMapping("/sync")
+    public FraudCheckResult checkTransactionFraud(@RequestBody TransactionRequest request) {
+        return transactionService.checkFraud(request);
     }
 
 }

@@ -16,6 +16,26 @@ spring:
         max.in.flight.requests.per.connection: 5
         spring.json.add.type.headers: false
 
+    consumer:
+      group-id: ronin-wallet
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.use.type.headers: false
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.CooperativeStickyAssignor
+
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 300000 # milliseconds
+
 
 kafka:
   transaction: ronin-wallet-transactions-dev # <tenant_id>-<service_owner>-<topic_name>-<environment>
+  fraud-detection:
+    topic: ronin-fraud-detection-result-dev
+    concurrency: 3
