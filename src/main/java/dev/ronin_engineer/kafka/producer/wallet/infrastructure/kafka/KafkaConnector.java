@@ -12,8 +12,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.LockSupport;
 
 @Service
 @Slf4j
@@ -29,13 +27,13 @@ public class KafkaConnector {
     private Integer cacheTimeout;
 
     @SneakyThrows
-    public KafkaMessage<FraudCheckResult> syncRequest(String topic, KafkaMessage request) {
+    public KafkaMessage<FraudCheckResult> sendSync(String topic, KafkaMessage request) {
         kafkaTemplate.send(topic, request);
         log.info("Produced a message to topic: {}, value: {}", topic, request);
 
-        Thread.sleep(5);
+        Thread.sleep(5);    // wait for consumer receiving and processing (tuning)
         int leftTime = cacheTimeout;
-        int initDelay = 20;
+        int initDelay = 20; // (tuning)
         int attempt = 0;
 
         // exponential backoff

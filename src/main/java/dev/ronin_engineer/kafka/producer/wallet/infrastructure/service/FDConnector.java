@@ -36,7 +36,7 @@ public class FDConnector {
                     transaction
             );
 
-            KafkaMessage<FraudCheckResult> response = kafkaConnector.syncRequest(transactionTopic, message);
+            KafkaMessage<FraudCheckResult> response = kafkaConnector.sendSync(transactionTopic, message);
             return response.getPayload();
         } catch (Exception e) {
             log.error("Failed to produce the message to topic: " + transactionTopic);
